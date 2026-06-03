@@ -1,0 +1,171 @@
+@import "tailwindcss";
+
+/* ─── Fonts ─────────────────────────────────────────────────────────────── */
+/* Plus Jakarta Sans (headings) + DM Sans (body) loaded in layout.tsx       */
+
+/* ─── Design tokens ─────────────────────────────────────────────────────── */
+:root {
+  /* Surfaces */
+  --bg:         #FAFAF8;
+  --surface:    #FFFFFF;
+  --surface-2:  #F4F2EF;
+  --border:     rgba(30, 25, 20, 0.08);
+  --border-2:   rgba(30, 25, 20, 0.16);
+
+  /* Text */
+  --text:       #1E1914;
+  --text-2:     #6B6560;
+  --text-3:     #ADA8A3;
+
+  /* Accent (default — Phase 2 makes this user-selectable) */
+  --accent:     #C4856A;
+  --accent-hover: #B07460;
+
+  /* Radius */
+  --radius-sm:  8px;
+  --radius-md:  14px;
+  --radius-lg:  20px;
+  --radius-full: 9999px;
+
+  /* Font size scale */
+  --text-xs:    12px;
+  --text-sm:    14px;
+  --text-base:  16px;
+  --text-lg:    18px;
+  --text-xl:    22px;
+  --text-2xl:   28px;
+  --text-3xl:   36px;
+
+  /* Feeling states */
+  --stuck-bg:          #F2EEF8;
+  --stuck-accent:      #8B6BBE;
+  --stuck-text:        #3D2870;
+
+  --overwhelmed-bg:    #FEF0EB;
+  --overwhelmed-accent:#C4856A;
+  --overwhelmed-text:  #6B2C14;
+
+  --unmotivated-bg:    #EDFAF0;
+  --unmotivated-accent:#5EA86A;
+  --unmotivated-text:  #1E5C2A;
+
+  --disorganized-bg:   #EBF2FE;
+  --disorganized-accent:#5580C8;
+  --disorganized-text: #1A3868;
+
+  --discouraged-bg:    #FEF0F5;
+  --discouraged-accent:#C46090;
+  --discouraged-text:  #6B1438;
+}
+
+/* ─── Font size override (user preference, applied to :root) ─────────────── */
+:root[data-fontsize="compact"] {
+  --text-base: 15px;
+  --text-sm:   13px;
+}
+:root[data-fontsize="large"] {
+  --text-base: 18px;
+  --text-sm:   15px;
+}
+
+/* ─── Base reset ─────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* ─── Reduced motion ─────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ─── Body ───────────────────────────────────────────────────────────────── */
+body {
+  font-family: var(--font-body, 'DM Sans', system-ui, sans-serif);
+  font-size: var(--text-base);
+  line-height: 1.65;
+  color: var(--text);
+  background: var(--bg);
+  min-height: 100svh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Typography helpers ─────────────────────────────────────────────────── */
+.font-heading {
+  font-family: var(--font-heading, 'Plus Jakarta Sans', system-ui, sans-serif);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading, 'Plus Jakarta Sans', system-ui, sans-serif);
+  line-height: 1.2;
+}
+
+/* ─── Focus visible (accessibility) ─────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* ─── Scrollbar (optional refinement) ───────────────────────────────────── */
+@supports (scrollbar-width: thin) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-2) transparent;
+  }
+}
+
+/* ─── Utility: visually hidden (for screen readers) ─────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ─── Animation keyframes ────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.25s ease both;
+}
+
+.animate-pop-in {
+  animation: popIn 0.18s ease both;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease both;
+}
