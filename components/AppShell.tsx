@@ -9,6 +9,7 @@ interface Props {
 export default function AppShell({ profile }: Props) {
   return (
     <div style={{ background: 'var(--bg)', minHeight: '100svh' }}>
+
       {/* ── Navbar ─────────────────────────────────────────────────────── */}
       <nav
         style={{
@@ -19,7 +20,7 @@ export default function AppShell({ profile }: Props) {
           backdropFilter: 'blur(10px)',
           WebkitBackdropFilter: 'blur(10px)',
           borderBottom: '0.5px solid var(--border)',
-          padding: '0.85rem 1.5rem',
+          padding: '0.9rem 1.25rem',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -27,39 +28,36 @@ export default function AppShell({ profile }: Props) {
       >
         <span
           className="font-heading"
-          style={{ fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--text)' }}
+          style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--text)' }}
         >
           Anti-Planner
         </span>
-        <div style={{ display: 'flex', gap: '6px' }}>
-          {['Home', 'Settings'].map(label => (
-            <button
-              key={label}
-              style={{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                padding: '6px 12px',
-                fontSize: 'var(--text-xs)',
-                fontWeight: 500,
-                color: 'var(--text-2)',
-                borderRadius: 'var(--radius-full)',
-                fontFamily: 'inherit',
-                transition: 'all 0.15s',
-              }}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
+
+        {/* Settings only — "Home" is redundant when you're on home */}
+        <button
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '6px 10px',
+            fontSize: 'var(--text-xs)',
+            fontWeight: 500,
+            color: 'var(--text-3)',
+            borderRadius: 'var(--radius-full)',
+            fontFamily: 'inherit',
+            letterSpacing: '0.06em',
+          }}
+        >
+          Settings
+        </button>
       </nav>
 
-      {/* ── Home placeholder ────────────────────────────────────────────── */}
+      {/* ── Main ───────────────────────────────────────────────────────── */}
       <main
         style={{
-          maxWidth: '680px',
+          maxWidth: '600px',
           margin: '0 auto',
-          padding: '3rem 1.25rem',
+          padding: '2.5rem 1.25rem',
           textAlign: 'center',
         }}
       >
@@ -69,41 +67,14 @@ export default function AppShell({ profile }: Props) {
             fontSize: 'var(--text-3xl)',
             fontWeight: 600,
             color: 'var(--text)',
-            marginBottom: '0.5rem',
+            lineHeight: 1.15,
           }}
         >
           Hey,{' '}
           <span style={{ color: 'var(--accent)' }}>
             {profile.name || 'you'}
           </span>
-          .
         </h1>
-        <p
-          className="animate-fade-up"
-          style={{
-            fontSize: 'var(--text-sm)',
-            color: 'var(--text-2)',
-            maxWidth: '340px',
-            margin: '0 auto',
-            lineHeight: 1.7,
-            animationDelay: '0.05s',
-          }}
-        >
-          No pressure. No calendar. Pick how you&rsquo;re feeling and find a strategy that meets you there.
-        </p>
-
-        <p
-          className="animate-fade-up"
-          style={{
-            marginTop: '3rem',
-            fontSize: 'var(--text-xs)',
-            color: 'var(--text-3)',
-            letterSpacing: '0.08em',
-            animationDelay: '0.1s',
-          }}
-        >
-          Feeling states and strategies coming in Phase 3.
-        </p>
       </main>
     </div>
   );
