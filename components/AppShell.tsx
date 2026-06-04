@@ -1,12 +1,23 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import type { UserProfile } from '@/types';
+import { restoreTheme } from '@/lib/theme';
+import SettingsPanel from '@/components/settings/SettingsPanel';
 
 interface Props {
   profile: UserProfile;
 }
 
-export default function AppShell({ profile }: Props) {
+export default function AppShell({ profile: initialProfile }: Props) {
+  const [profile, setProfile]           = useState(initialProfile);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+
+  // Restore saved theme on mount
+  useEffect(() => {
+    restoreTheme(profile);
+  }, []);  // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <div style={{ background: 'var(--bg)', minHeight: '100svh' }}>
 
@@ -33,8 +44,10 @@ export default function AppShell({ profile }: Props) {
           Anti-Planner
         </span>
 
-        {/* Settings only — "Home" is redundant when you're on home */}
         <button
+          onClick={() => setSettingsOpen(o => !o)}
+          aria-expanded={settingsOpen}
+          aria-controls="settings-panel"
           style={{
             background: 'none',
             border: 'none',
@@ -42,15 +55,26 @@ export default function AppShell({ profile }: Props) {
             padding: '6px 10px',
             fontSize: 'var(--text-xs)',
             fontWeight: 500,
-            color: 'var(--text-3)',
+            color: settingsOpen ? 'var(--accent)' : 'var(--text-3)',
             borderRadius: 'var(--radius-full)',
             fontFamily: 'inherit',
             letterSpacing: '0.06em',
+            transition: 'color 0.15s',
           }}
         >
           Settings
         </button>
       </nav>
+
+      {/* ── Settings panel ─────────────────────────────────────────────── */}
+      {settingsOpen && (
+        <div id="settings-panel">
+          <SettingsPanel
+            profile={profile}
+            onProfileChange={setProfile}
+          />
+        </div>
+      )}
 
       {/* ── Main ───────────────────────────────────────────────────────── */}
       <main
@@ -76,6 +100,7 @@ export default function AppShell({ profile }: Props) {
           </span>
         </h1>
       </main>
+
     </div>
   );
 }

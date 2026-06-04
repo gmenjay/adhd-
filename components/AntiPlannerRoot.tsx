@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import type { UserProfile } from '@/types';
-import { loadProfile, saveProfile } from '@/lib/storage';
+import { loadProfile } from '@/lib/storage';
+import { restoreTheme } from '@/lib/theme';
 import Onboarding from '@/components/onboarding/Onboarding';
 import AppShell from '@/components/AppShell';
 
@@ -16,6 +17,7 @@ export default function AntiPlannerRoot() {
   useEffect(() => {
     const saved = loadProfile();
     if (saved) {
+      restoreTheme(saved); // apply saved palette + font size before first render
       setProfile(saved);
       setState('app');
     } else {
