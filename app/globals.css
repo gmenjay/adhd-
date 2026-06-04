@@ -58,6 +58,37 @@
   --discouraged-text:  #6B1438;
 }
 
+/* ─── Dark mode ──────────────────────────────────────────────────────────── */
+/* Toggled by setting data-theme="dark" on <html>.                           */
+/* Accent + feeling-state accent stay palette-specific (set by JS).          */
+/* Feeling-state bg + text flip to dark-safe values here.                    */
+[data-theme="dark"] {
+  --bg:        #141210;
+  --surface:   #1C1916;
+  --surface-2: #242018;
+  --border:    rgba(255, 245, 230, 0.08);
+  --border-2:  rgba(255, 245, 230, 0.15);
+  --text:      #EDE8E0;
+  --text-2:    #A09890;
+  --text-3:    #686260;
+
+  /* Feeling state backgrounds — dark tints, text flips light */
+  --stuck-bg:          #1C1828;
+  --stuck-text:        #C8B8F0;
+
+  --overwhelmed-bg:    #221510;
+  --overwhelmed-text:  #F0C4A0;
+
+  --unmotivated-bg:    #101C12;
+  --unmotivated-text:  #A8D4A8;
+
+  --disorganized-bg:   #101822;
+  --disorganized-text: #A8C0F0;
+
+  --discouraged-bg:    #201014;
+  --discouraged-text:  #F0A8C0;
+}
+
 /* ─── Font size override (user preference, applied to :root) ─────────────── */
 :root[data-fontsize="compact"] {
   --text-base: 15px;

@@ -75,8 +75,9 @@ export interface UserProfile {
   // settings
   scope: 'min' | 'mid' | 'all';   // Vol 1 / Vol 1+half-2 / All
   showSubCategories: boolean;
-  themeAccent: string;             // CSS custom property value
+  themeAccent: string;
   themeFontSize: 'compact' | 'default' | 'large';
+  themeMode: 'light' | 'dark';
   // meta
   createdAt: number;
   version: number;

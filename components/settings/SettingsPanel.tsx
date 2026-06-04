@@ -1,6 +1,6 @@
 'use client';
 
-import { PALETTES, FONT_SIZES, applyTheme, type FontSizeId } from '@/lib/theme';
+import { PALETTES, FONT_SIZES, applyTheme, applyMode, type FontSizeId, type ThemeMode } from '@/lib/theme';
 import { saveProfile } from '@/lib/storage';
 import type { UserProfile } from '@/types';
 
@@ -26,6 +26,16 @@ export default function SettingsPanel({ profile, onProfileChange }: Props) {
     saveProfile(updated);
     onProfileChange(updated);
   }
+
+  function toggleMode() {
+    const next: ThemeMode = profile.themeMode === 'dark' ? 'light' : 'dark';
+    const updated = { ...profile, themeMode: next };
+    applyMode(next);
+    saveProfile(updated);
+    onProfileChange(updated);
+  }
+
+  const isDark = profile.themeMode === 'dark';
 
   return (
     <div
@@ -133,6 +143,73 @@ export default function SettingsPanel({ profile, onProfileChange }: Props) {
               </button>
             ))}
           </div>
+        </div>
+
+        {/* ── Light / Dark ─────────────────────────────────────────────── */}
+        <div>
+          <p
+            style={{
+              fontSize: 'var(--text-xs)',
+              fontWeight: 500,
+              color: 'var(--text-3)',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              marginBottom: '0.6rem',
+            }}
+          >
+            Appearance
+          </p>
+          <button
+            onClick={toggleMode}
+            role="switch"
+            aria-checked={isDark}
+            aria-label="Toggle dark mode"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              background: 'none',
+              border: '1px solid var(--border-2)',
+              borderRadius: 'var(--radius-full)',
+              padding: '5px 14px 5px 6px',
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+              color: 'var(--text-2)',
+              fontSize: 'var(--text-xs)',
+              fontWeight: 500,
+              transition: 'border-color 0.15s',
+            }}
+          >
+            {/* Track */}
+            <span
+              style={{
+                position: 'relative',
+                display: 'inline-block',
+                width: '36px',
+                height: '20px',
+                borderRadius: '10px',
+                background: isDark ? 'var(--text)' : 'var(--border-2)',
+                transition: 'background 0.2s',
+                flexShrink: 0,
+              }}
+            >
+              {/* Thumb */}
+              <span
+                style={{
+                  position: 'absolute',
+                  top: '3px',
+                  left: isDark ? '19px' : '3px',
+                  width: '14px',
+                  height: '14px',
+                  borderRadius: '50%',
+                  background: 'var(--surface)',
+                  transition: 'left 0.2s',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+                }}
+              />
+            </span>
+            {isDark ? 'Dark' : 'Light'}
+          </button>
         </div>
 
       </div>

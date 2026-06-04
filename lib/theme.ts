@@ -111,7 +111,20 @@ export function applyTheme(paletteId: string, fontSize: FontSizeId): void {
   root.style.setProperty('--text-sm', `${baseNum - 2}px`);
 }
 
+// ─── Apply light / dark mode ──────────────────────────────────────────────
+export type ThemeMode = 'light' | 'dark';
+
+export function applyMode(mode: ThemeMode): void {
+  if (typeof document === 'undefined') return;
+  if (mode === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+  }
+}
+
 // ─── Restore from profile on boot ─────────────────────────────────────────
 export function restoreTheme(profile: UserProfile): void {
+  applyMode(profile.themeMode ?? 'light');
   applyTheme(profile.themeAccent ?? DEFAULT_PALETTE_ID, profile.themeFontSize ?? 'default');
 }

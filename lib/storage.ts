@@ -17,8 +17,9 @@ export function defaultProfile(name = ''): UserProfile {
     tasks: [],
     scope: 'min',
     showSubCategories: true,
-    themeAccent: 'default',
+    themeAccent: 'warm',
     themeFontSize: 'default',
+    themeMode: 'light',
     createdAt: Date.now(),
     version: CURRENT_VERSION,
   };
