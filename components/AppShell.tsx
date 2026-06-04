@@ -1,9 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import type { UserProfile } from '@/types';
+import type { FeelingId, UserProfile } from '@/types';
 import { restoreTheme } from '@/lib/theme';
+import { saveProfile } from '@/lib/storage';
 import SettingsPanel from '@/components/settings/SettingsPanel';
+import FeelingGrid from '@/components/home/FeelingGrid';
+import StrategyPanel from '@/components/home/StrategyPanel';
 
 interface Props {
   profile: UserProfile;
@@ -12,11 +15,26 @@ interface Props {
 export default function AppShell({ profile: initialProfile }: Props) {
   const [profile, setProfile]           = useState(initialProfile);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [feeling, setFeeling]           = useState<FeelingId | null>(
+    initialProfile.lastFeeling ?? null
+  );
 
-  // Restore saved theme on mount
+  // Restore theme on mount
   useEffect(() => {
     restoreTheme(profile);
-  }, []);  // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Persist last feeling to profile for session restore
+  function handleFeelingChange(id: FeelingId | null) {
+    setFeeling(id);
+    const updated = { ...profile, lastFeeling: id ?? undefined };
+    saveProfile(updated);
+    setProfile(updated);
+  }
+
+  // Time-of-day greeting
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
 
   return (
     <div style={{ background: 'var(--bg)', minHeight: '100svh' }}>
@@ -43,7 +61,6 @@ export default function AppShell({ profile: initialProfile }: Props) {
         >
           Anti-Planner
         </span>
-
         <button
           onClick={() => setSettingsOpen(o => !o)}
           aria-expanded={settingsOpen}
@@ -69,38 +86,58 @@ export default function AppShell({ profile: initialProfile }: Props) {
       {/* ── Settings panel ─────────────────────────────────────────────── */}
       {settingsOpen && (
         <div id="settings-panel">
-          <SettingsPanel
-            profile={profile}
-            onProfileChange={setProfile}
-          />
+          <SettingsPanel profile={profile} onProfileChange={setProfile} />
         </div>
       )}
 
-      {/* ── Main ───────────────────────────────────────────────────────── */}
+      {/* ── Main content ───────────────────────────────────────────────── */}
       <main
         style={{
           maxWidth: '600px',
           margin: '0 auto',
-          padding: '2.5rem 1.25rem',
-          textAlign: 'center',
+          padding: '2rem 1.25rem 5rem',
         }}
       >
-        <h1
-          className="font-heading animate-fade-up"
-          style={{
-            fontSize: 'var(--text-3xl)',
-            fontWeight: 600,
-            color: 'var(--text)',
-            lineHeight: 1.15,
-          }}
-        >
-          Hey,{' '}
-          <span style={{ color: 'var(--accent)' }}>
-            {profile.name || 'you'}
-          </span>
-        </h1>
-      </main>
+        {/* Greeting */}
+        <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
+          <h1
+            className="font-heading animate-fade-up"
+            style={{
+              fontSize: 'var(--text-3xl)',
+              fontWeight: 600,
+              color: 'var(--text)',
+              lineHeight: 1.15,
+              marginBottom: '0.3rem',
+            }}
+          >
+            {greeting},{' '}
+            <span style={{ color: 'var(--accent)' }}>{profile.name || 'you'}</span>
+          </h1>
+          <p
+            className="animate-fade-up"
+            style={{
+              fontSize: 'var(--text-sm)',
+              color: 'var(--text-3)',
+              animationDelay: '0.04s',
+            }}
+          >
+            How are you feeling right now?
+          </p>
+        </div>
 
+        {/* Feeling grid */}
+        <FeelingGrid active={feeling} onChange={handleFeelingChange} />
+
+        {/* Strategy panel — appears when a feeling is selected */}
+        {feeling && (
+          <StrategyPanel
+            key={feeling} // remount on feeling change to reset show-more state
+            feeling={feeling}
+            profile={profile}
+            onProfileChange={p => { setProfile(p); }}
+          />
+        )}
+      </main>
     </div>
   );
 }
