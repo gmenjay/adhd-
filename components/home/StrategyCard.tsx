@@ -1,7 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import type { Strategy, StrategyRating } from '@/types';
+import type { Strategy, StrategyRating, UserProfile } from '@/types';
+import { getToolConfig } from '@/lib/toolConfig';
+import ToolDispatcher from '@/components/tools/ToolDispatcher';
 
 const TAG_STYLES: Record<string, { bg: string; color: string }> = {
   game:     { bg: '#FFF8EC', color: '#7A5800' },
@@ -19,14 +21,17 @@ interface Props {
   onRate: (id: string, rating: 'worked' | 'nope') => void;
   onPin: (id: string) => void;
   onHide: (id: string) => void;
+  profile: UserProfile;
+  onProfileChange: (p: UserProfile) => void;
 }
 
-export default function StrategyCard({ strategy: s, rating, pinned, onRate, onPin, onHide }: Props) {
+export default function StrategyCard({ strategy: s, rating, pinned, onRate, onPin, onHide, profile, onProfileChange }: Props) {
   const [open, setOpen] = useState(false);
   const tagStyle = TAG_STYLES[s.tag] ?? TAG_STYLES.reflect;
   const worked = rating?.worked ?? 0;
   const nope = rating?.nope ?? 0;
   const total = worked + nope;
+  const toolConfig = getToolConfig(s.id);
 
   return (
     <div
@@ -125,6 +130,13 @@ export default function StrategyCard({ strategy: s, rating, pinned, onRate, onPi
           >
             {s.desc}
           </p>
+
+          {/* Tool (if available) */}
+          {toolConfig && (
+            <div style={{ padding: '14px 14px 0', borderTop: '1px solid var(--border)', marginTop: '10px' }}>
+              <ToolDispatcher config={toolConfig} strategyId={s.id} profile={profile} onProfileChange={onProfileChange} />
+            </div>
+          )}
 
           {/* Vol badge + hide */}
           <div

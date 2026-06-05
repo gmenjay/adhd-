@@ -67,7 +67,7 @@ const T: Record<string, ToolConfig> = {
 
   'stuck-roadblocks': {
     type: 'pairs',
-    col1: 'What's the roadblock?',
+    col1: 'What\'s the roadblock?',
     col2: 'Possible workaround?',
     ph1: 'e.g. Don\'t know where to start',
     ph2: 'e.g. Just open the file',

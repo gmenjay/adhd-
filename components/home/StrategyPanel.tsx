@@ -167,6 +167,8 @@ export default function StrategyPanel({ feeling, profile, onProfileChange }: Pro
               onRate={rate}
               onPin={togglePin}
               onHide={hideStrategy}
+              profile={profile}
+              onProfileChange={onProfileChange}
             />
           ))}
 
