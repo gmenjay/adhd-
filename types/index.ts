@@ -78,6 +78,9 @@ export interface UserProfile {
   themeAccent: string;
   themeFontSize: 'compact' | 'default' | 'large';
   themeMode: 'light' | 'dark';
+  // Tool exercise state — keyed by strategy id
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  toolStates: Record<string, Record<string, any>>;
   // meta
   createdAt: number;
   version: number;

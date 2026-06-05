@@ -20,6 +20,7 @@ export function defaultProfile(name = ''): UserProfile {
     themeAccent: 'warm',
     themeFontSize: 'default',
     themeMode: 'light',
+    toolStates: {},
     createdAt: Date.now(),
     version: CURRENT_VERSION,
   };
