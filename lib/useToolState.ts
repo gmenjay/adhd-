@@ -1,7 +1,8 @@
 import { saveProfile } from '@/lib/storage';
 import type { UserProfile } from '@/types';
 
-export function useToolState<T extends Record<string, unknown>>(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function useToolState<T = any>(
   strategyId: string,
   profile: UserProfile,
   onProfileChange: (p: UserProfile) => void,
@@ -19,7 +20,7 @@ export function useToolState<T extends Record<string, unknown>>(
   function persist(next: T) {
     const updated: UserProfile = {
       ...profile,
-      toolStates: { ...profile.toolStates, [strategyId]: next },
+      toolStates: { ...profile.toolStates, [strategyId]: next as Record<string, unknown> },
     };
     saveProfile(updated);
     onProfileChange(updated);
