@@ -76,11 +76,11 @@ export default function CoinTool({ config, strategyId, profile, onProfileChange 
                 <button
                   onClick={() => flip(task.id)}
                   disabled={flipping === task.id}
+                  className={flipping === task.id ? 'animate-spin' : ''}
                   style={{
                     background: 'var(--accent)', color: '#fff', border: 'none',
                     borderRadius: 'var(--radius-full)', padding: '8px 14px', fontSize: '13px',
                     fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit',
-                    animation: flipping === task.id ? 'spin 0.6s linear' : 'none',
                   }}
                 >
                   {flipping === task.id ? '🪙' : 'Flip'}
@@ -92,8 +92,6 @@ export default function CoinTool({ config, strategyId, profile, onProfileChange 
           ))}
         </div>
       )}
-
-      <style>{`@keyframes spin { 0%{transform:rotateY(0)} 100%{transform:rotateY(720deg)} }`}</style>
     </ToolShell>
   );
 }
